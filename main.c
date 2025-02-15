@@ -15,6 +15,12 @@
 #define INPUT_SIZE	100
 #define TESTING	1
 
+// Types of functions for menu operation
+#define	ADD_FUNCTION	'+'
+#define	SUBTRACT_FUNCTION	'-'
+#define	MULTIPLY_FUNCTION	'*'
+#define	DIVIDE_FUNCTION	'/'
+
 #include "logger.h"
 #include "math_library.h"
 #include "test_harness.h"
@@ -31,16 +37,24 @@ enum commands {
 	EXIT
 } operations;
 
+// Types of tests for menu operation {
+enum tests {
+	FUNCTIONAL,
+	BOUNDARY,
+	EXCEPTION
+} testoperations;
+
 int main(void)
 {
-
 #ifdef TESTING
 	testHeader();
-	testHarness("Add two numbers", 2, 3, 5, add, testFunctional);
-	testHarness("Subtract two numbers", 10, 2, 8, subtract, testFunctional);
-	testHarness("Multiply two numbers", 7, 7, 49, multiply, testFunctional);
-	testHarness("Divide two numbers", 10, 2, 5, divide, testFunctional);
+	testHarness("Add two numbers", 2, 3, 5, add, testCase);
+	testHarness("Subtract two numbers", 10, 2, 8, subtract, testCase);
+	testHarness("Multiply two numbers", 7, 7, 49, multiply, testCase);
+	testHarness("Divide two numbers", 10, 2, 5, divide, testCase);
 	testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
+	testHarnessBoundary(add);
+	testHarnessBoundary(subtract);
 	printf("\n\n");
 #endif
 

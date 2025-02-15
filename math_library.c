@@ -52,12 +52,12 @@ int multiply(int num1, int num2) {
 //				  int divisor	:	Divisor
 // RETURNS		: double
 //
-double divide(int dividend, int divisor) {
+int divide(int dividend, int divisor) {
 	// Check for division by zero
 	if (divisor == 0) {
 		return 0.0;
 	}
 	else {
-		return (double)dividend / (double)divisor;
+		return dividend / divisor;
 	}
 }

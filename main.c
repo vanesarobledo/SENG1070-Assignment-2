@@ -32,6 +32,9 @@ enum commands {
 
 int main(void)
 {
+	testHeader();
+	testHarness("Add two numbers", 2, 3, 5, add);
+
 	// Initialize data
 	int menuOperation = 0; // Store menu operation
 	bool loop = true; // Flag to loop menu

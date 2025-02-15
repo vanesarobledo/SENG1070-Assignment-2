@@ -7,4 +7,4 @@
 int add(int, int);
 int subtract(int, int);
 int multiply(int, int);
-double divide(int, int);
+int divide(int, int);

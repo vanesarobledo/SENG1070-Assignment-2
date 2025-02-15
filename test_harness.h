@@ -9,15 +9,17 @@
 #define PASS 0
 #define	FAIL 1
 
+#define	RESULT_SIZE	5
+#define	LOG_MESSAGE_SIZE	256
+
 // Function Prototypes - Test Harnesses
 
 void testHeader();
-void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int, int, int, int*));
-void pass();
-void fail();
+void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*));
+void storeResult(char* resultDescription, char* result);
 
 // Functional Tests
-bool test_functional(int (*function)(int, int), int num1, int num2, int expected, int* actual);
+bool testFunctional(int (*function)(int, int), int num1, int num2, int expected, int* actual);
 
 // Exception Tests
 void test_add_exception();

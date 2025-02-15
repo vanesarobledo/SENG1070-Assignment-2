@@ -15,88 +15,86 @@
 //
 // FUNCTION		: testHeader
 // DESCRIPTION	: Prints test header to screen
+//				  (Formatting based on UnitTestExample from PROG1175)
 // PARAMETERS	: void
 // RETURNS		: void
 //
 void testHeader(void) {
-	printf("======================================================================================\n");
-	printf("%-20s%-20s%-20s%-20s%-20s\n", "Test Name", "Input Parameters", "Expected Output", "Actual Output", "Result");
-	printf("======================================================================================\n");
+	printf("===========================================================================================\n");
+	printf("%-25s%-10s%-10s%-20s%-20s%-20s\n", "Test Name", "Param1", "Param2", "Expected Output", "Actual Output", "Result");
+	printf("===========================================================================================\n");
 }
 
 //
 // FUNCTION		: testHarness
 // DESCRIPTION	: Prints the result of test case
-// PARAMETERS	: char* testName
-//				  int param1
-//				int param2
-//				int expectedOutput
-//				bool (*test)(int, int, int)
+//				  (Formatting of console message based on UnitTestExample from PROG1175)
+// PARAMETERS	: char* testName		:	Description of test being conducted
+//				  int param1			:	First input parameter
+//				  int param2			:	Second input parameter
+//				  int expectedOutput	:	Expected output
+//				  int (*function)(int, int)		: Function to be tested
+//				  bool (*test)(int, int, int)	: Test case function
 // RETURNS		: void
 //
 void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*)) {
-	// Store actualOutput
-	int actualOutput = 0;
+	int actualOutput = 0; // Store actual result
+	char resultDescription[RESULT_SIZE] = ""; // Store string for test log
+	bool result = FAIL; // Initialize test result
 
-	// Store result of test
-	bool result = test((*function), param1, param2, expectedOutput, &actualOutput);
+	// Conduct test & store actual output
+	result = test((*function), param1, param2, expectedOutput, &actualOutput);
 
 	// Print result of test to console
-	printf("%-20s%-10d%-10d%-20d%-20d", testName, param1, param2, expectedOutput, actualOutput);
+	printf("%-25s%-10d%-10d%-20d%-20d", testName, param1, param2, expectedOutput, actualOutput);
 
-	if (result == PASS) {
-		pass();
+	// Print whether test passed or failed to console in coloured text (thanks Tyler for mentioning it)
+	// and stores the result in a string for test log
+	// REFERENCE: https://www.theurbanpenguin.com/4184-2/
+	if (result == PASS) { 
+		printf("\033[0;32m"); // Green
+		printf("PASS\n");
+		printf("\033[0m");
+		storeResult(resultDescription, "PASS");
 	}
-	else {
-		fail();
-		//assert(result == expectedOutput && "FAIL\n");
+	else { 
+		printf("\033[0;31m"); // Red
+		printf("FAIL\n");
+		printf("\033[0m");
+		storeResult(resultDescription, "FAIL");
 	}
-
 
 	// Log test results
-	//if (result == PASS) {
-	//	logMessage(TEST, LOG_INFO, "Test Name: %s\nParameters: %d, %d\nExpected Output: %d\nActual Output: %d\nResult: PASS", testName, param1, param2, expectedOutput, actualOutput);
-	//	closeLogger();
-	//}
-	//else if (result == FAIL) {
-	//	logMessage(TEST, LOG_WARNING, "Test Name: %s\nParameters: %d, %d\nExpected Output: %d\nActual Output: %d\nResult: FAIL");
-	//	closeLogger();
-	//}
+	// Store result of test in string
+	char message[LOG_MESSAGE_SIZE] = "";
+	sprintf_s(message, LOG_MESSAGE_SIZE, "Test Ran\nTest Name: %s\nParameters: %d, %d\nExpected Output: %d\nActual Output: %d\nResult: %s", testName, param1, param2, expectedOutput, actualOutput, resultDescription);
+
+	// Log message and then close the logger
+	logMessage(TEST, LOG_INFO, message);
+	closeLogger();
 }
 
 //
-// FUNCTION		: pass
-// DESCRIPTION	: Prints PASS in green text
-// PARAMETERS	: void
+// FUNCTION		: storeResult
+// DESCRIPTION	: Copies string of test result into resultDescription
+// PARAMETERS	: char* resultDescription	:	String storing descriiption of result (PASS/FAIL)
+//				  char* result				:	String containing PASS or FAIL
 // RETURNS		: void
 //
-void pass(void) {
-	printf("\033[0;32m");
-	printf("PASS\n");
-	printf("\033[0m");
+void storeResult(char* resultDescription, char* result) {
+	strncpy_s(resultDescription, RESULT_SIZE, result, RESULT_SIZE);
+	resultDescription[RESULT_SIZE - 1] = '\0'; // Ensure null-termination after strncpy
 }
 
-//
-// FUNCTION		: fail
-// DESCRIPTION	: Prints FAIL in red text
-// PARAMETERS	: void
-// RETURNS		: void
-//
-void fail(void) {
-	printf("\033[0;31m");
-	printf("FAIL\n");
-	printf("\033[0m");
-}
-
-// Functional Tests (Positive Tests)
+// Functional Test (Positive Tests)
 
 //
-// FUNCTION		: test_functiona
+// FUNCTION		: testFunctional
 // DESCRIPTION	: Contains functional test case for given function
 // PARAMETERS	: void
 // RETURNS		: bool
 //
-bool test_functional(int (*function)(int, int), int num1, int num2, int expected, int* actual) {
+bool testFunctional(int (*function)(int, int), int num1, int num2, int expected, int* actual) {
 	// Store actual output of function
 	*actual = (*function)(num1, num2);
 

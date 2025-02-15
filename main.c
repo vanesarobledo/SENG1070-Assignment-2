@@ -36,10 +36,10 @@ int main(void)
 
 #ifdef TESTING
 	testHeader();
-	testHarness("Add two numbers", 2, 3, 5, add, test_functional);
-	testHarness("Subtract two numbers", 10, 2, 8, subtract, test_functional);
-	testHarness("Multiply two numbers", 7, 7, 49, multiply, test_functional);
-	testHarness("Divide two numbers", 10, 2, 5, divide, test_functional);
+	testHarness("Add two numbers", 2, 3, 5, add, testFunctional);
+	testHarness("Subtract two numbers", 10, 2, 8, subtract, testFunctional);
+	testHarness("Multiply two numbers", 7, 7, 49, multiply, testFunctional);
+	testHarness("Divide two numbers", 10, 2, 5, divide, testFunctional);
 	printf("\n\n");
 #endif
 

@@ -9,6 +9,10 @@
 */
 
 #include <stdio.h>
+#include <stdbool.h>
+
+// Define input sizze
+#define INPUT_SIZE	100
 
 #include "logger.h"
 #include "math_library.h"
@@ -16,6 +20,7 @@
 
 // Function Prototypes
 void menu();
+void getMenuOperation(int*);
 
 // Commands for menu operation
 enum commands {
@@ -23,12 +28,43 @@ enum commands {
 	TEST_HARNESS,
 	VIEW_LOG_FILES,
 	EXIT
-};
+} operations;
 
 int main(void)
 {
+	// Initialize data
+	int menuOperation = 0; // Store menu operation
+	bool loop = true; // Flag to loop menu
+	
+	while (loop) {
+		// Get menu operation from user
+		menu();
+		getMenuOperation(&menuOperation);
+		operations = menuOperation - 1;
+		switch (operations)
+		{
+		case TEST_CASE:
+			printf("Call menu to select test cases.\n");
+			break;
 
-	return EXIT_SUCCESS;
+		case TEST_HARNESS:
+			printf("Run every single test harness.\n");
+			break;
+
+		case VIEW_LOG_FILES:
+			printf("Call menu to view log files.\n");
+			break;
+
+		case EXIT:
+			printf("Exiting program...\n");
+			exit(EXIT_SUCCESS);
+			break;
+
+		default:
+			printf("Please select a valid menu operation.\n");
+			break;
+		}
+	}
 }
 
 //
@@ -38,5 +74,35 @@ int main(void)
 // RETURNS		: void
 //
 void menu(void) {
-	printf("Menu.\n");
+	printf("\n[ Operations ]\n");
+	printf("[ 1 ] Run individual test case\n");
+	printf("[ 2 ] Run all tests in test harness\n");
+	printf("[ 3 ] View log files\n");
+	printf("[ 4 ] Exit\n");
+}
+
+void getMenuOperation(int* menuOperation) {
+	char buffer[INPUT_SIZE] = ""; // Buffer to store input
+	char extraChar = '0'; // Store extraneous user input
+	bool valid = false; // Valid menu operation
+	const int kStart = 1; // Menu start number
+
+	// Ask user for menu number
+	while (!valid) {
+		printf("Select option: ");
+		fgets(buffer, sizeof(buffer), stdin);
+		buffer[strlen(buffer) - 1]; // Remove trailing newline character from buffer
+
+		// Validate input
+		// Check conversion to integer without extraneous characters
+		if (sscanf_s(buffer, "%d %c", menuOperation, &extraChar, (unsigned int)sizeof(extraChar)) != 1) {
+			printf("Please enter a valid integer.\n");
+		} // Check range of value
+		else if (*menuOperation < kStart && *menuOperation > EXIT) {
+			printf("Please enter a valid option from the menu.\n");
+		} // Input is valid, break loop
+		else {
+			valid = true;
+		}
+	}
 }

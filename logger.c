@@ -10,7 +10,6 @@
 */
 
 #include "logger.h"
-#include "math_library.h"
 #include "test_harness.h"
 
 // Create pointer to log file
@@ -23,18 +22,29 @@ static FILE* logFile = NULL;
  *                const char *message: The message to log.
  * RETURNS      : void
  */
-void logMessage(const char* level, const char* message) {
+void logMessage(bool type, const char* level, const char* message) {
+    // Open test.log or program.log
     if (logFile == NULL) {
-        errno_t err = fopen_s(&logFile, "test.log", "a");
-        if (err != 0 || logFile == NULL) {
-            perror("Unable to open log file.\n");
-            exit(EXIT_FAILURE);
+        if (type == TEST) {
+            errno_t err = fopen_s(&logFile, "test.log", "a");
+            if (err != 0 || logFile == NULL) {
+                perror("Unable to open log file.\n");
+                exit(EXIT_FAILURE);
+            }
+        }
+        else {
+            errno_t err = fopen_s(&logFile, "program.log", "a");
+            if (err != 0 || logFile == NULL) {
+                perror("Unable to open log file.\n");
+                exit(EXIT_FAILURE);
+            }
         }
     }
 
+    // Create timestamp
     time_t now = time(NULL);
     struct tm localTime;
-    char timestamp[64];
+    char timestamp[TIMESTAMP_SIZE];
 
     if (localtime_s(&localTime, &now) != 0) {
         perror("Failed to get local time.\n");
@@ -43,6 +53,7 @@ void logMessage(const char* level, const char* message) {
 
     strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", &localTime);
 
+    // Add log message to file
     fprintf(logFile, "[%s] [%s]: %s\n", timestamp, level, message);
 }
 

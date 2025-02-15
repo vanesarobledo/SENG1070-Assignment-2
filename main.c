@@ -11,8 +11,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-// Define input sizze
+// Define macros
 #define INPUT_SIZE	100
+#define TESTING	1
 
 #include "logger.h"
 #include "math_library.h"
@@ -32,8 +33,15 @@ enum commands {
 
 int main(void)
 {
+
+#ifdef TESTING
 	testHeader();
-	testHarness("Add two numbers", 2, 3, 5, add);
+	testHarness("Add two numbers", 2, 3, 5, add, test_functional);
+	testHarness("Subtract two numbers", 10, 2, 8, subtract, test_functional);
+	testHarness("Multiply two numbers", 7, 7, 49, multiply, test_functional);
+	testHarness("Divide two numbers", 10, 2, 5, divide, test_functional);
+	printf("\n\n");
+#endif
 
 	// Initialize data
 	int menuOperation = 0; // Store menu operation
@@ -77,7 +85,7 @@ int main(void)
 // RETURNS		: void
 //
 void menu(void) {
-	printf("\n[ Operations ]\n");
+	printf("\Menu Operations\n");
 	printf("[ 1 ] Run individual test case\n");
 	printf("[ 2 ] Run all tests in test harness\n");
 	printf("[ 3 ] View log files\n");

@@ -1,15 +1,23 @@
 #pragma once
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <assert.h>
+
+// Define pass/fail test
+#define PASS 0
+#define	FAIL 1
 
 // Function Prototypes - Test Harnesses
 
 void testHeader();
-void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*callback)(int, int));
+void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int, int, int, int*));
+void pass();
+void fail();
 
 // Functional Tests
-void test_add();
-void test_subtract();
-void test_multiply();
-void test_divide();
+bool test_functional(int (*function)(int, int), int num1, int num2, int expected, int* actual);
 
 // Exception Tests
 void test_add_exception();

@@ -55,7 +55,7 @@ int multiply(int num1, int num2) {
 int divide(int dividend, int divisor) {
 	// Check for division by zero
 	if (divisor == 0) {
-		return 0.0;
+		return 0;
 	}
 	else {
 		return dividend / divisor;

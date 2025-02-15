@@ -40,6 +40,7 @@ int main(void)
 	testHarness("Subtract two numbers", 10, 2, 8, subtract, testFunctional);
 	testHarness("Multiply two numbers", 7, 7, 49, multiply, testFunctional);
 	testHarness("Divide two numbers", 10, 2, 5, divide, testFunctional);
+	testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
 	printf("\n\n");
 #endif
 

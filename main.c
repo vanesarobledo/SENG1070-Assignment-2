@@ -72,10 +72,8 @@ int main(void)
 	bool validChoice = false; // Flag for valid user input
 	FILE* logFile = NULL; // Store log file for opening
 
-	printf("==================================================================\n");
-	printf("SENG1070 Assignment 2 - Error Logging and Test Harness Development\n");
-	printf("by Vanesa Robledo\n");
-	printf("==================================================================");
+	header();
+
 	while (loop) {
 		// Get menu operation from user
 		menu();
@@ -177,6 +175,19 @@ int main(void)
 	logMessage(PROGRAM, LOG_INFO, "Program exited");
 	closeLogger();
 	return EXIT_SUCCESS;
+}
+
+//
+// FUNCTION		: header
+// DESCRIPTION	: Prints header of program to the screen
+// PARAMETERS	: none
+// RETURNS		: void
+//
+void header(void) {
+	printf("==================================================================\n");
+	printf("SENG1070 Assignment 2 - Error Logging and Test Harness Development\n");
+	printf("by Vanesa Robledo\n");
+	printf("==================================================================");
 }
 
 //

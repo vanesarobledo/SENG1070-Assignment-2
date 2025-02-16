@@ -78,15 +78,18 @@ void closeLogger() {
  * RETURNS      : void
  */
 void viewFile(FILE* file, bool type) {
+    // Clear the screen to view file
+    system("clear");
+
     // Open test.log or program.log by default for reading safely
     errno_t err;
     if (type == TEST) {
         err = fopen_s(&file, "test.log", "r");
-        printf("Viewing test.log\n");
+        printf("test.log:\n");
     }
     else {
         err = fopen_s(&file, "program.log", "r");
-        printf("\nViewing program.log\n");
+        printf("program.log:\n");
     }
     printf("==================================================================\n");
 
@@ -132,8 +135,12 @@ void viewFile(FILE* file, bool type) {
         exit(EXIT_FAILURE);
     }
 
-    // Prompt user to continiue.
-    printf("==================================================================\n");
-    printf("\nEnd of file. Press any key to continue...\n");
+    // Prompt for user input to exit viewing file
+    printf("==================================================================\n\n");
+    printf("End of file. Press any key to continue...");
     getchar();
+
+    // Reset the screen
+    system("clear");
+    header();
 }

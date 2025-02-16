@@ -24,3 +24,4 @@ void closeLogger();
 
 // File I/O
 void viewFile(FILE* file, bool type);
+void header();

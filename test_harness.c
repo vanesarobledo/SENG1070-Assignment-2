@@ -1,6 +1,6 @@
 /*
 * FILE			: test_harness.c
-* PROJECT		: SENG1070 Assignment 2
+* PROJECT		: SENG1070 Assignment 2 - Error Logging and Test Harness Development
 * PROGRAMMER	: Vanesa Robledo
 * FIRST VERSION : 2025-02-15
 * DESCRIPTION	: This program implements a logging system and test harness for validating the
@@ -8,8 +8,8 @@
 * This file contains the test harness that automates execution of test cases.
 */
 
-// Toggle logging
-//#define	LOGGING
+// Toggle test logging
+#define	LOGGING
 
 #include "logger.h"
 #include "math_library.h"
@@ -54,7 +54,7 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 			// Conduct test & store actual result
 			result = test((*function), param1, param2, expectedOutput, &actuaResult);
 			if (result == PASS) {
-				storeActualOutput(actualOutput, "Error");
+				storeActualOutput(actualOutput, "0");
 			}
 			else {
 				storeActualOutput(actualOutput, "Wrong Result");
@@ -123,14 +123,14 @@ void testHarnessBoundary(int (*function)(int, int)) {
 		// TEST Minimum Value
 		testHarness("Boundary: Min value", INT_MIN, 1, -2147483647, add, testCase);
 		// TEST Maximum Value
-		testHarness("Boundary: Max value", 2147483647, 1, INT_MAX, add, testCase);
+		testHarness("Boundary: Max value", 2147483646, 1, INT_MAX, add, testCase);
 	}
 	// SUBTRACT
 	else if (*function == subtract) {
 		// TEST Minimum Value
-		testHarness("Boundary: Min value", 2147483647, 1, INT_MIN, subtract, testCase);
+		testHarness("Boundary: Min value", -2147483647, 1, INT_MIN, subtract, testCase);
 		// TEST Maximum Value
-		testHarness("Boundary: Max value", INT_MAX, 1, 2147483647, subtract, testCase);
+		testHarness("Boundary: Max value", INT_MAX, 1, 2147483646, subtract, testCase);
 	}
 	// MULTIPLY
 	else if (*function == multiply) {
@@ -138,7 +138,7 @@ void testHarnessBoundary(int (*function)(int, int)) {
 	}
 	// DIVIDE
 	else if (*function == divide) {
-		printf("Divide test harness here.\n");
+		printf("divide() test harness here.\n");
 	}
 }
 

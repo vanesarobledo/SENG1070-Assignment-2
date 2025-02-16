@@ -1,6 +1,6 @@
 /*
 * FILE			: math_library.c
-* PROJECT		: SENG1070 Assignment 2
+* PROJECT		: SENG1070 Assignment 2 - Error Logging and Test Harness Development
 * PROGRAMMER	: Vanesa Robledo
 * FIRST VERSION : 2025-02-15
 * DESCRIPTION	: This program implements a logging system and test harness for validating the

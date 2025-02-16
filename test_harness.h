@@ -14,7 +14,7 @@
 #define PASS 0
 #define	FAIL 1
 
-// Function Prototypes - Test Harnesses
+// Function Prototypes - Test Harness and Test Cases
 void testHeader();
 void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*));
 void testHarnessBoundary(int (*function)(int, int));
@@ -26,5 +26,4 @@ void storeResult(char* resultDescription, char* result);
 bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* actual);
 
 // Exception Tests
-//bool testException();
 bool testDivideByZero(int (*function)(int, int), int num1, int num2, int expected, int* actual);

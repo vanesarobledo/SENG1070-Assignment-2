@@ -5,8 +5,8 @@
 * FIRST VERSION : 2025-02-15
 * DESCRIPTION	: This program implements a logging system and test harness for validating the
 *				  functionality of a simple C program - basic math operations.
-* This file contains the logging functions of the program. Most of this code was taken from the
-* IntermediateLogger example from Week 3.
+* This file contains the logging functions of the program and file I/O for viewing the log files.
+* Most of this code was taken from the IntermediateLogger example from Week 3.
 */
 
 #include "logger.h"
@@ -18,8 +18,9 @@ static FILE* logFile = NULL;
 /*
  * FUNCTION     : logMessage
  * DESCRIPTION  : Logs a message with a specific log level and timestamp.
- * PARAMETERS   : const char *level: The level of the log (INFO, WARNING, ERROR).
- *                const char *message: The message to log.
+ * PARAMETERS   : bool type             : The type
+*                 const char *level     : The level of the log (INFO, WARNING, ERROR).
+ *                const char *message   : The message to log.
  * RETURNS      : void
  */
 void logMessage(bool type, const char* level, const char* message) {
@@ -68,4 +69,71 @@ void closeLogger() {
         fclose(logFile);
         logFile = NULL;
     }
+}
+/*
+ * FUNCTION     : viewFile
+ * DESCRIPTION  : Opens a log file for viewing
+ * PARAMETERS   : FILE* file    :   Pointer to file
+ *              : bool type     :   
+ * RETURNS      : void
+ */
+void viewFile(FILE* file, bool type) {
+    // Open test.log or program.log by default for reading safely
+    errno_t err;
+    if (type == TEST) {
+        err = fopen_s(&file, "test.log", "r");
+        printf("Viewing test.log\n");
+    }
+    else {
+        err = fopen_s(&file, "program.log", "r");
+        printf("\nViewing program.log\n");
+    }
+    printf("==================================================================\n");
+
+    // Exit if there is a failure to open file
+    if (err != 0) {
+        logMessage(PROGRAM, LOG_ERROR, "Error opening file");
+        closeLogger();
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+
+    // Read file to screen
+    bool eof = false; // Flag for eaching end of file
+    char buffer[LINE_SIZE] = ""; // String storing line from file
+    char line[LINE_SIZE] = ""; // String storing line after sscanf_s
+
+    while (!eof) {
+        // Stop reading file if EOF is reached
+        if (feof(file)) {
+            eof = true;
+        }
+        // Stop reading file if some file error occurs
+        else if (ferror(file)) {
+            printf("Error reading file.\n");
+            logMessage(PROGRAM, LOG_ERROR, "Error reading from file");
+            closeLogger();
+        }
+        else
+        {
+            // Store line in buffer
+            fgets(buffer, LINE_SIZE, file);
+            // Read line if not empty
+            if (sscanf_s(buffer, "%s", &line, (unsigned int)sizeof(line)) > 0) {
+                printf("%s", buffer);
+            }
+        }
+    }
+    // Close the file safely
+    if (fclose(file) != 0) {
+        perror("Error closing file.");
+        logMessage(PROGRAM, LOG_ERROR, "Error closing file");
+        closeLogger();
+        exit(EXIT_FAILURE);
+    }
+
+    // Prompt user to continiue.
+    printf("==================================================================\n");
+    printf("\nEnd of file. Press any key to continue...\n");
+    getchar();
 }

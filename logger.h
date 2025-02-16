@@ -4,8 +4,10 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 #define	TIMESTAMP_SIZE	64
+#define	LINE_SIZE	256
 
 // Define log levels
 #define LOG_INFO	"INFO"
@@ -19,3 +21,6 @@
 // Function Prototypes - Logging
 void logMessage(bool type, const char* level, const char* message);
 void closeLogger();
+
+// File I/O
+void viewFile(FILE* file, bool type);

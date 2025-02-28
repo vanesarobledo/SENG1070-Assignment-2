@@ -70,7 +70,7 @@ int main(void)
 	bool loop = true; // Flag to loop menu
 	char choice = '0'; // Store user choice of function
 	bool validChoice = false; // Flag for valid user input
-	FILE* logFile = NULL; // Store log file for opening
+	FILE* logFile = NULL; // Store pointer to log file
 
 	header();
 
@@ -273,14 +273,14 @@ void runTest(int testType, char func) {
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases on add() function");
 			closeLogger();
-			printf("add() Exception tests\n");
+			testHarnessException("add() Floats", 1.5, 2.5, 3, add, testCase);
 			break;
 		case ALL_TESTS:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run all test cases on add() function");
 			closeLogger();
 			testHarness("Add two numbers", 2, 3, 5, add, testCase);
 			testHarnessBoundary(add);
-			printf("add() Exception tests\n");
+			testHarnessException("add() Floats", 1.5, 2.5, 3, add, testCase);
 			break;
 		default:
 			break;
@@ -302,11 +302,14 @@ void runTest(int testType, char func) {
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases subtract() function");
 			closeLogger();
-			printf("subtract() Exception tests\n");
+			testHarnessException("subtract() Floats", 9.9, 1.2, 8, subtract, testCase);
 			break;
 		case ALL_TESTS:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run all test cases on subtract() function");
 			closeLogger();
+			testHarness("Subtract two numbers", 10, 2, 8, subtract, testCase);
+			testHarnessBoundary(subtract);
+			testHarnessException("subtract() Floats", 9.9, 1.2, 8, subtract, testCase);
 			break;
 		default:
 			break;
@@ -328,11 +331,14 @@ void runTest(int testType, char func) {
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases multiply() function");
 			closeLogger();
-			printf("multiply() Exception tests\n");
+			testHarnessException("multiply() Floats", 10.10, 20.20, 200, multiply, testCase);
 			break;
 		case ALL_TESTS:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run all test cases on multiply() function");
 			closeLogger();
+			testHarness("Multiply two numbers", 7, 7, 49, multiply, testCase);
+			testHarnessBoundary(multiply);
+			testHarnessException("multiply() Floats", 10.10, 20.20, 200, multiply, testCase);
 			break;
 		default:
 			break;
@@ -345,6 +351,7 @@ void runTest(int testType, char func) {
 			logMessage(PROGRAM, LOG_INFO, "User selected to run functional test cases on divide() function");
 			closeLogger();
 			testHarness("Divide two numbers", 10, 2, 5, divide, testCase);
+			testHarness("Divide two numbers", 20, 3, 6, divide, testCase);
 			break;
 		case BOUNDARY:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run boundary test cases on divide() function");
@@ -354,12 +361,16 @@ void runTest(int testType, char func) {
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases on divide() function");
 			closeLogger();
+			testHarnessException("Divide() Floats", 100.0001, 3, 33, divide, testCase);
 			testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
 			break;
 		case ALL_TESTS:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run all test cases on divide() function");
 			closeLogger();
-			printf("divide() Exception tests\n");
+			testHarness("Divide two numbers", 10, 2, 5, divide, testCase);
+			testHarnessBoundary(divide);
+			testHarnessException("Divide() Floats", 100.0001, 3, 33, divide, testCase);
+			testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
 			break;
 		default:
 			break;
@@ -376,6 +387,7 @@ void runTest(int testType, char func) {
 			testHarness("Subtract two numbers", 10, 2, 8, subtract, testCase);
 			testHarness("Multiply two numbers", 7, 7, 49, multiply, testCase);
 			testHarness("Divide two numbers", 10, 2, 5, divide, testCase);
+			testHarness("Divide two numbers", 20, 3, 6, divide, testCase);
 			break;
 		case BOUNDARY:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run boundary test cases on all functions");
@@ -390,6 +402,10 @@ void runTest(int testType, char func) {
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases on all functions");
 			closeLogger();
 			printf("EXCEPTION TESTS\n");
+			testHarnessException("add() Floats", 1.5, 2.5, 3, add, testCase);
+			testHarnessException("subtract() Floats", 9.9, 1.2, 8, subtract, testCase);
+			testHarnessException("multiply() Floats", 10.10, 20.20, 200, multiply, testCase);
+			testHarnessException("divide() Floats", 100.0001, 3, 33, divide, testCase);
 			testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
 			break;
 		case ALL_TESTS:
@@ -400,16 +416,17 @@ void runTest(int testType, char func) {
 			testHarness("Subtract two numbers", 10, 2, 8, subtract, testCase);
 			testHarness("Multiply two numbers", 7, 7, 49, multiply, testCase);
 			testHarness("Divide two numbers", 10, 2, 5, divide, testCase);
+			testHarness("Divide two numbers", 20, 3, 6, divide, testCase);
 			printf("\nBOUNDARY TESTS\n");
 			testHarnessBoundary(add);
 			testHarnessBoundary(subtract);
 			testHarnessBoundary(multiply);
 			testHarnessBoundary(divide);
 			printf("\nEXCEPTION TESTS\n");
-			printf("add() Exception tests\n");
-			printf("subtract() Exception tests\n");
-			printf("multiply() Exception tests\n");
-			printf("divide() Exception tests\n");
+			testHarnessException("add() Floats", 1.5, 2.5, 3, add, testCase);
+			testHarnessException("subtract() Floats", 9.9, 1.2, 8, subtract, testCase);
+			testHarnessException("multiply() Floats", 10.10, 20.20, 200, multiply, testCase);
+			testHarnessException("divide() Floats", 100.0001, 3, 33, divide, testCase);
 			testHarness("Divide by zero", 10, 0, 0, divide, testDivideByZero);
 			break;
 		default:

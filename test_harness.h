@@ -17,6 +17,7 @@
 // Function Prototypes - Test Harness and Test Cases
 void testHeader();
 void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*));
+void testHarnessException(char* testName, float param1, float param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*));
 void testHarnessBoundary(int (*function)(int, int));
 
 void storeActualOutput(char* actualOutput, char* result);

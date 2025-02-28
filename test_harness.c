@@ -9,7 +9,6 @@
 */
 
 // Toggle test logging
-#define	LOGGING
 
 #include "logger.h"
 #include "math_library.h"
@@ -43,18 +42,18 @@ void testHeader(void) {
 void testHarness(char* testName, int param1, int param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*)) {
 	// INITIALIZE DATA
 	bool result = FAIL; // Initialize test result
-	int actuaResult = 0; // Store numerical results of function
+	int actualResult = 0; // Store numerical results of function
 	char actualOutput[OUTPUT_SIZE] = ""; // Store actual output in string
 	char resultDescription[RESULT_SIZE] = ""; // Store string of PASS/FAIL for test log
 
+	// Print details of test
 	printf("%-25s%-15d%-15d%-20d", testName, param1, param2, expectedOutput);
 
-	// RUN EXCEPTION (NEGATIVE) TESTS
-	// Division by Zero
+	// RUN DIVIDE BY ZERO TEST
 	if ((*test) == testDivideByZero) {
 		if ((*function) == divide) {
 			// Conduct test & store actual result
-			result = test((*function), param1, param2, expectedOutput, &actuaResult);
+			result = test((*function), param1, param2, expectedOutput, &actualResult);
 			if (result == PASS) {
 				storeActualOutput(actualOutput, "0");
 			}
@@ -71,14 +70,14 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 	// RUN OTHER TESTS
 	else {
 		// Conduct test & store actual result
-		result = test((*function), param1, param2, expectedOutput, &actuaResult);
+		result = test((*function), param1, param2, expectedOutput, &actualResult);
 
 		// Copy numerical result to actual output
-		sprintf_s(actualOutput, OUTPUT_SIZE, "%d", actuaResult);
+		sprintf_s(actualOutput, OUTPUT_SIZE, "%d", actualResult);
 	}
 
 	// TEST RESULTS
-	// Print details of test to result
+	// Print actual output of test
 	printf("%-20s", actualOutput);
 
 	// Print whether test passed or failed to console in coloured text (thanks Tyler for mentioning it) and stores the result in a string for test log
@@ -90,23 +89,21 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 		printf("\033[0m");
 		storeResult(resultDescription, "PASS");
 	}
-	//else if (result == FAIL) { 
-	//	printf("\033[0;31m"); // Red
-	//	printf("FAIL\n");
-	//	printf("\033[0m");
-	//	storeResult(resultDescription, "FAIL");
-	//}
+	else if (result == FAIL) { 
+		printf("\033[0;31m"); // Red
+		printf("FAIL\n");
+		printf("\033[0m");
+		storeResult(resultDescription, "FAIL");
+	}
 
 	// LOG TEST RESULTS
 	// Store result of test in string
-#ifdef LOGGING
 	char message[LOG_MESSAGE_SIZE] = "";
 	sprintf_s(message, LOG_MESSAGE_SIZE, "Test Ran\nTest Name: %s\nParameters: %d, %d\nExpected Output: %d\nActual Output: %s\nResult: %s", testName, param1, param2, expectedOutput, actualOutput, resultDescription);
 
 	// Log message and then close the logger
 	logMessage(TEST, LOG_INFO, message);
 	closeLogger();
-#endif
 }
 
 //
@@ -117,9 +114,6 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 // RETURNS		: void
 //
 void testHarnessBoundary(int (*function)(int, int)) {
-	// Define constants
-	const int kmin = 1; // Minimum integer to increment/decrement
-	
 	// ADD
 	if (*function == add) {
 		// TEST Minimum Value
@@ -149,9 +143,67 @@ void testHarnessBoundary(int (*function)(int, int)) {
 		testHarness("divide() Boundary", INT_MIN, INT_MIN, 1, divide, testCase);
 		testHarness("divide() Boundary", INT_MAX, INT_MAX, 1, divide, testCase);
 		// TEST Negative Values
-		testHarness("divide() Boundary", INT_MIN, 2147483647, -2147483647, divide, testCase);
+		testHarness("divide() Boundary", INT_MIN, 2147483647, -1, divide, testCase);
 		testHarness("divide() Boundary", INT_MAX, -2147483647, -1, divide, testCase);
 	}
+}
+
+//
+// FUNCTION		: testHarnessException
+// DESCRIPTION	: Prints the result of exception test cases (input is floating-point values)
+//				  (Formatting of console message based on UnitTestExample from PROG1175)
+// PARAMETERS	: char* testName		:	Description of test being conducted
+//				  float param1			:	First input parameter
+//				  float param2			:	Second input parameter
+//				  int expectedOutput	:	Expected output
+//				  int (*function)(int, int)		: Function to be tested
+//				  bool (*test)(int, int, int)	: Test case function
+// RETURNS		: void
+//
+void testHarnessException(char* testName, float param1, float param2, int expectedOutput, int (*function)(int, int), bool (*test)(int (*function)(int, int), int, int, int, int*)) {
+	// INITIALIZE DATA
+	bool result = FAIL; // Initialize test result
+	int actualResult = 0; // Store numerical results of function
+	char actualOutput[OUTPUT_SIZE] = ""; // Store actual output in string
+	char resultDescription[RESULT_SIZE] = ""; // Store string of PASS/FAIL for test log
+
+	// Print test details
+	printf("%-25s%-15.4f%-15.4f%-20d", testName, param1, param2, expectedOutput);
+
+	// RUN EXCEPTION (NEGATIVE) TESTS
+	result = test((*function), param1, param2, expectedOutput, &actualResult);
+
+	// Copy numerical result to actual output
+	sprintf_s(actualOutput, OUTPUT_SIZE, "%d", actualResult);
+
+	// TEST RESULTS
+	// Print actual output of test
+	printf("%-20s", actualOutput);
+
+	// Print whether test passed or failed to console in coloured text (thanks Tyler for mentioning it) and stores the result in a string for test log
+	// Reference: https://www.theurbanpenguin.com/4184-2/
+
+	if (result == PASS) {
+		printf("\033[0;32m"); // Green
+		printf("PASS\n");
+		printf("\033[0m");
+		storeResult(resultDescription, "PASS");
+	}
+	else if (result == FAIL) {
+		printf("\033[0;31m"); // Red
+		printf("FAIL\n");
+		printf("\033[0m");
+		storeResult(resultDescription, "FAIL");
+	}
+
+	// LOG TEST RESULTS
+	// Store result of test in string
+	char message[LOG_MESSAGE_SIZE] = "";
+	sprintf_s(message, LOG_MESSAGE_SIZE, "Test Ran\nTest Name: %s\nParameters: %f, %f\nExpected Output: %d\nActual Output: %s\nResult: %s", testName, param1, param2, expectedOutput, actualOutput, resultDescription);
+
+	// Log message and then close the logger
+	logMessage(TEST, LOG_INFO, message);
+	closeLogger();
 }
 
 //
@@ -194,8 +246,9 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 	// Store actual output of function
 	*actual = (*function)(num1, num2);
 
+	// Assert the test result
 	assert(expected == *actual);
-
+	
 	// Return whether actual output matches expected output
 	if (expected == *actual) {
 		return PASS;
@@ -206,6 +259,26 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 }
 
 // EXCEPTION (NEGATIVE) TESTS
+
+//
+// FUNCTION		: testFloat
+// DESCRIPTION	: Tests floating-point parameters
+// PARAMETERS	: int (*function)(int, int)	:	Function to be tested
+//				  float param1				:	First input parameter
+//				  float param2				:	Second input parameter
+//				  int expectedOutput		:	Expected output
+//				  int* actual				:	Pointer to integer storing actual result
+// RETURNS		: bool
+//
+bool testFloat(int (*function)(int, int), float num1, float num2, int expected, int* actual) {
+	*actual = divide(num1, num2);
+	if (*actual == 0) {
+		return PASS;
+	}
+	else {
+		return FAIL;
+	}
+}
 
 //
 // FUNCTION		: testDivideByZero

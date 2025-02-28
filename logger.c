@@ -81,6 +81,9 @@ void viewFile(FILE* file, bool type) {
     // Clear the screen to view file
     system("clear");
 
+    // Store return value of getchar()
+    int key;
+
     // Open test.log or program.log by default for reading safely
     errno_t err;
     if (type == TEST) {
@@ -137,8 +140,8 @@ void viewFile(FILE* file, bool type) {
 
     // Prompt for user input to exit viewing file
     printf("==================================================================\n\n");
-    printf("End of file. Press any key to continue...");
-    getchar();
+    printf("End of file. Press enter to continue...");
+    key = getchar();
 
     // Reset the screen
     system("clear");

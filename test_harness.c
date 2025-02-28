@@ -47,6 +47,8 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 	char actualOutput[OUTPUT_SIZE] = ""; // Store actual output in string
 	char resultDescription[RESULT_SIZE] = ""; // Store string of PASS/FAIL for test log
 
+	printf("%-25s%-15d%-15d%-20d", testName, param1, param2, expectedOutput);
+
 	// RUN EXCEPTION (NEGATIVE) TESTS
 	// Division by Zero
 	if ((*test) == testDivideByZero) {
@@ -76,8 +78,8 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 	}
 
 	// TEST RESULTS
-	// Print result of test to console
-	printf("%-25s%-15d%-15d%-20d%-20s", testName, param1, param2, expectedOutput, actualOutput);
+	// Print details of test to result
+	printf("%-20s", actualOutput);
 
 	// Print whether test passed or failed to console in coloured text (thanks Tyler for mentioning it) and stores the result in a string for test log
 	// Reference: https://www.theurbanpenguin.com/4184-2/
@@ -88,12 +90,12 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 		printf("\033[0m");
 		storeResult(resultDescription, "PASS");
 	}
-	else if (result == FAIL) { 
-		printf("\033[0;31m"); // Red
-		printf("FAIL\n");
-		printf("\033[0m");
-		storeResult(resultDescription, "FAIL");
-	}
+	//else if (result == FAIL) { 
+	//	printf("\033[0;31m"); // Red
+	//	printf("FAIL\n");
+	//	printf("\033[0m");
+	//	storeResult(resultDescription, "FAIL");
+	//}
 
 	// LOG TEST RESULTS
 	// Store result of test in string
@@ -116,29 +118,35 @@ void testHarness(char* testName, int param1, int param2, int expectedOutput, int
 //
 void testHarnessBoundary(int (*function)(int, int)) {
 	// Define constants
-	const int kmin = 1; // Minimum integer
+	const int kmin = 1; // Minimum integer to increment/decrement
 	
 	// ADD
 	if (*function == add) {
 		// TEST Minimum Value
-		testHarness("Boundary: Min value", INT_MIN, 1, -2147483647, add, testCase);
+		testHarness("add() Boundary: Min value", INT_MIN, 1, -2147483647, add, testCase);
 		// TEST Maximum Value
-		testHarness("Boundary: Max value", 2147483646, 1, INT_MAX, add, testCase);
+		testHarness("add()  Boundary: Max value", 2147483646, 1, INT_MAX, add, testCase);
 	}
 	// SUBTRACT
 	else if (*function == subtract) {
 		// TEST Minimum Value
-		testHarness("Boundary: Min value", -2147483647, 1, INT_MIN, subtract, testCase);
+		testHarness("subtract() Boundary: Min value", -2147483647, 1, INT_MIN, subtract, testCase);
 		// TEST Maximum Value
-		testHarness("Boundary: Max value", INT_MAX, 1, 2147483646, subtract, testCase);
+		testHarness("subtract() Boundary: Max value", INT_MAX, 1, 2147483646, subtract, testCase);
 	}
 	// MULTIPLY
 	else if (*function == multiply) {
-		printf("mutiply() test harness here.\n");
+		testHarness("multiply() Boundary", INT_MAX, 1, INT_MAX, multiply, testCase);
+		testHarness("multiply() Boundary", INT_MIN, 1, INT_MIN, multiply, testCase);
+		testHarness("multiply() Boundary", -2147483647, -1, INT_MAX, multiply, testCase);
+		testHarness("multiply() Boundary", INT_MAX, -1, -2147483647, multiply, testCase);
 	}
 	// DIVIDE
 	else if (*function == divide) {
-		printf("divide() test harness here.\n");
+		testHarness("divide() Boundary", INT_MIN, INT_MIN, 1, divide, testCase);
+		testHarness("divide() Boundary", INT_MAX, INT_MAX, 1, divide, testCase);
+		testHarness("divide() Boundary", INT_MIN, 2147483647, -1, divide, testCase);
+		testHarness("divide() Boundary", INT_MAX, -2147483647, -1, divide, testCase);
 	}
 }
 
@@ -182,6 +190,8 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 	// Store actual output of function
 	*actual = (*function)(num1, num2);
 
+	assert(expected == *actual);
+
 	// Return whether actual output matches expected output
 	if (expected == *actual) {
 		return PASS;
@@ -192,6 +202,17 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 }
 
 // EXCEPTION (NEGATIVE) TESTS
+
+//
+// FUNCTION		: testCaseException
+// DESCRIPTION	: Contains exception test case for a given function
+// PARAMETERS	: int (*function)(int, int)	:	Function to be tested
+// 
+// RETURNS		: bool
+//
+//bool testCaseException(int (*function)(int, int),) {
+//
+//}
 
 //
 // FUNCTION		: testDivideByZero

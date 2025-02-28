@@ -349,7 +349,7 @@ void runTest(int testType, char func) {
 		case BOUNDARY:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run boundary test cases on divide() function");
 			closeLogger();
-			testHarnessBoundary(multiply);
+			testHarnessBoundary(divide);
 			break;
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases on divide() function");
@@ -381,10 +381,10 @@ void runTest(int testType, char func) {
 			logMessage(PROGRAM, LOG_INFO, "User selected to run boundary test cases on all functions");
 			closeLogger();
 			printf("BOUNDARY TESTS\n");
+			testHarnessBoundary(add);
+			testHarnessBoundary(subtract);
 			testHarnessBoundary(multiply);
-			testHarnessBoundary(multiply);
-			testHarnessBoundary(multiply);
-			testHarnessBoundary(multiply);
+			testHarnessBoundary(divide);
 			break;
 		case EXCEPTION:
 			logMessage(PROGRAM, LOG_INFO, "User selected to run exception test cases on all functions");

@@ -26,5 +26,5 @@ void storeResult(char* resultDescription, char* result);
 // Functional Test
 bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* actual);
 
-// Exception Tests
+// Divide by Zero Test
 bool testDivideByZero(int (*function)(int, int), int num1, int num2, int expected, int* actual);

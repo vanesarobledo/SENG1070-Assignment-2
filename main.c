@@ -30,7 +30,7 @@ void menu();
 void menuTest();
 void menuFunctions();
 void menuFile();
-void runTest(int testType, char choice);
+void runTest(int, char);
 void getMenuOperation(int*);
 char getChar();
 

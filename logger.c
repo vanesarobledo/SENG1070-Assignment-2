@@ -18,6 +18,7 @@ static FILE* logFile = NULL;
 /*
  * FUNCTION     : logMessage
  * DESCRIPTION  : Logs a message with a specific log level and timestamp.
+ *                Taken and modified from IntermediateLogger 
  * PARAMETERS   : bool type             : The type
 *                 const char *level     : The level of the log (INFO, WARNING, ERROR).
  *                const char *message   : The message to log.
@@ -61,6 +62,7 @@ void logMessage(bool type, const char* level, const char* message) {
 /*
  * FUNCTION     : closeLogger
  * DESCRIPTION  : Closes the log file if it is open.
+ *                Taken from IntermediateLogger 
  * PARAMETERS   : none
  * RETURNS      : void
  */
@@ -70,6 +72,7 @@ void closeLogger() {
         logFile = NULL;
     }
 }
+
 /*
  * FUNCTION     : viewFile
  * DESCRIPTION  : Opens a log file for viewing

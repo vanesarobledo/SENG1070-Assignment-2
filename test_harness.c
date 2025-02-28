@@ -261,26 +261,6 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 // EXCEPTION (NEGATIVE) TESTS
 
 //
-// FUNCTION		: testFloat
-// DESCRIPTION	: Tests floating-point parameters
-// PARAMETERS	: int (*function)(int, int)	:	Function to be tested
-//				  float param1				:	First input parameter
-//				  float param2				:	Second input parameter
-//				  int expectedOutput		:	Expected output
-//				  int* actual				:	Pointer to integer storing actual result
-// RETURNS		: bool
-//
-bool testFloat(int (*function)(int, int), float num1, float num2, int expected, int* actual) {
-	*actual = divide(num1, num2);
-	if (*actual == 0) {
-		return PASS;
-	}
-	else {
-		return FAIL;
-	}
-}
-
-//
 // FUNCTION		: testDivideByZero
 // DESCRIPTION	: Tests division by zero
 // PARAMETERS	: int (*function)(int, int)	:	Function to be tested

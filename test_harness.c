@@ -123,29 +123,33 @@ void testHarnessBoundary(int (*function)(int, int)) {
 	// ADD
 	if (*function == add) {
 		// TEST Minimum Value
-		testHarness("add() Boundary: Min value", INT_MIN, 1, -2147483647, add, testCase);
+		testHarness("add() Boundary", INT_MIN, 1, -2147483647, add, testCase);
 		// TEST Maximum Value
-		testHarness("add()  Boundary: Max value", 2147483646, 1, INT_MAX, add, testCase);
+		testHarness("add()  Boundary", 2147483646, 1, INT_MAX, add, testCase);
 	}
 	// SUBTRACT
 	else if (*function == subtract) {
 		// TEST Minimum Value
-		testHarness("subtract() Boundary: Min value", -2147483647, 1, INT_MIN, subtract, testCase);
+		testHarness("subtract() Boundary", -2147483647, 1, INT_MIN, subtract, testCase);
 		// TEST Maximum Value
-		testHarness("subtract() Boundary: Max value", INT_MAX, 1, 2147483646, subtract, testCase);
+		testHarness("subtract() Boundary", INT_MAX, 1, 2147483646, subtract, testCase);
 	}
 	// MULTIPLY
 	else if (*function == multiply) {
+		// TEST Positive Values
 		testHarness("multiply() Boundary", INT_MAX, 1, INT_MAX, multiply, testCase);
 		testHarness("multiply() Boundary", INT_MIN, 1, INT_MIN, multiply, testCase);
+		// TEST Negative Values
 		testHarness("multiply() Boundary", -2147483647, -1, INT_MAX, multiply, testCase);
 		testHarness("multiply() Boundary", INT_MAX, -1, -2147483647, multiply, testCase);
 	}
 	// DIVIDE
 	else if (*function == divide) {
+		// TEST Positive Values
 		testHarness("divide() Boundary", INT_MIN, INT_MIN, 1, divide, testCase);
 		testHarness("divide() Boundary", INT_MAX, INT_MAX, 1, divide, testCase);
-		testHarness("divide() Boundary", INT_MIN, 2147483647, -1, divide, testCase);
+		// TEST Negative Values
+		testHarness("divide() Boundary", INT_MIN, 2147483647, -2147483647, divide, testCase);
 		testHarness("divide() Boundary", INT_MAX, -2147483647, -1, divide, testCase);
 	}
 }
@@ -202,17 +206,6 @@ bool testCase(int (*function)(int, int), int num1, int num2, int expected, int* 
 }
 
 // EXCEPTION (NEGATIVE) TESTS
-
-//
-// FUNCTION		: testCaseException
-// DESCRIPTION	: Contains exception test case for a given function
-// PARAMETERS	: int (*function)(int, int)	:	Function to be tested
-// 
-// RETURNS		: bool
-//
-//bool testCaseException(int (*function)(int, int),) {
-//
-//}
 
 //
 // FUNCTION		: testDivideByZero
